@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npx wrangler pages deploy:*)",
+      "Bash(npx wrangler pages project list:*)",
+      "Bash(npx wrangler pages project:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

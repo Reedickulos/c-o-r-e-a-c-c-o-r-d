@@ -1,0 +1,8 @@
+{
+  "name": "core-accord",
+  "compatibility_date": "2025-10-01",
+  "main": "src/index.js",
+  "vars": {
+    "OPENROUTER_API_KEY": "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"
+  }
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Inter"],
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<title>Stitch Design</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-background-light/10 dark:border-background-dark/10 px-10 py-3 text-white">
+<div class="flex items-center gap-4">
+<div class="h-6 w-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold tracking-tight text-background-dark dark:text-background-light">CORE ACCORD</h2>
+</div>
+<nav class="hidden items-center gap-6 text-sm font-medium text-background-dark/60 dark:text-background-light/60 md:flex">
+<a class="text-primary" href="#">Dashboard</a>
+<a class="transition-colors hover:text-primary" href="#">Queries</a>
+<a class="transition-colors hover:text-primary" href="#">Agents</a>
+<a class="transition-colors hover:text-primary" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="aspect-square w-10 rounded-full bg-cover bg-center bg-no-repeat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAkHOeuIdvQcXKalZ4dN9V64DsPd0lpfjLxrTYFrHBE4i4q1LycUt5YSWEnMdnTa_tPxBhkO3tkEe_oMhtF5jNa8YUJRXfL2kKkyoS8qEHxo8OfC3Kt9vd5tC0z4c1RHFxBEDyY9kK7Mg24HC30qask0UaA-KshFIZv8vCQ5zB6xNw72vk8ZC4rX-RwokiP0nQIXsXiWD1ctda96JH7VLTKOJIA03v5lYjpkcJb6a76510diuwG5K6rkCIX5ggUJx-JykSJpB37fLmD");'></div>
+<button class="md:hidden">
+<span class="material-symbols-outlined text-background-dark dark:text-background-light"> menu </span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-7xl">
+<div class="mb-8">
+<h1 class="text-3xl font-bold tracking-tight text-background-dark dark:text-background-light">Batch Processing Dashboard</h1>
+<p class="mt-2 text-background-dark/60 dark:text-background-light/60">Monitor and manage your batch queries in real-time.</p>
+</div>
+<div class="mb-8 rounded-lg border border-background-dark/10 bg-background-light dark:border-background-light/10 dark:bg-background-dark p-6">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<h2 class="text-xl font-semibold text-background-dark dark:text-background-light">Current Batch Status</h2>
+<div class="flex items-center gap-2">
+<p class="text-sm font-medium text-background-dark/60 dark:text-background-light/60">Cost/Million Tokens:</p>
+<input class="w-24 rounded border-background-dark/20 bg-background-light p-1 text-sm dark:border-background-light/20 dark:bg-background-dark" type="number" value="3.50"/>
+<button class="flex items-center gap-1 rounded bg-primary px-3 py-1 text-sm text-white transition-colors hover:bg-primary/80">
+<span class="material-symbols-outlined text-base"> settings </span>
+                Set
+              </button>
+</div>
+</div>
+<div class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+<div class="space-y-2">
+<p class="text-sm font-medium text-background-dark/60 dark:text-background-light/60">Batch Completion</p>
+<div class="flex items-center gap-2">
+<div class="h-2 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 65%;"></div>
+</div>
+<p class="text-sm font-medium text-primary">65%</p>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-sm font-medium text-background-dark/60 dark:text-background-light/60">Total Tokens (Standard)</p>
+<p class="text-2xl font-bold text-background-dark dark:text-background-light">1.2M</p>
+</div>
+<div class="space-y-2">
+<p class="text-sm font-medium text-background-dark/60 dark:text-background-light/60">Total Tokens (ACCORD)</p>
+<p class="text-2xl font-bold text-primary">780K</p>
+</div>
+<div class="space-y-2">
+<p class="text-sm font-medium text-background-dark/60 dark:text-background-light/60">Estimated Cost Savings</p>
+<p class="text-2xl font-bold text-green-500">$1.47</p>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<div>
+<h2 class="mb-4 text-xl font-semibold text-background-dark dark:text-background-light">Active Queries</h2>
+<div class="overflow-x-auto rounded-lg border border-background-dark/10 bg-background-light dark:border-background-light/10 dark:bg-background-dark">
+<table class="w-full text-left">
+<thead class="border-b border-background-dark/10 bg-background-light/50 dark:border-background-light/10 dark:bg-background-dark/50">
+<tr>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Query ID</th>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Status</th>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Progress</th>
+<th class="hidden px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60 lg:table-cell">Token Reduction</th>
+<th class="hidden px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60 xl:table-cell">Cost Savings</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-background-dark/10 dark:divide-background-light/10">
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Query 1</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary">Running</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 75%;"></div>
+</div>
+<span class="text-xs font-medium text-background-dark/60 dark:text-background-light/60">75%</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">25K → 15K</span>
+<span class="text-xs text-green-500">(-40%)</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm font-medium text-green-500 xl:table-cell">$0.04</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Query 2</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-500">Completed</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 100%;"></div>
+</div>
+<span class="text-xs font-medium text-background-dark/60 dark:text-background-light/60">100%</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">30K → 18K</span>
+<span class="text-xs text-green-500">(-40%)</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm font-medium text-green-500 xl:table-cell">$0.04</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Query 3</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary">Running</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 50%;"></div>
+</div>
+<span class="text-xs font-medium text-background-dark/60 dark:text-background-light/60">50%</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">50K → 35K</span>
+<span class="text-xs text-green-500">(-30%)</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm font-medium text-green-500 xl:table-cell">$0.05</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Query 4</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-background-dark/10 px-3 py-1 text-sm font-medium text-background-dark/60 dark:bg-background-light/10 dark:text-background-light/60">Pending</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 0%;"></div>
+</div>
+<span class="text-xs font-medium text-background-dark/60 dark:text-background-light/60">0%</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">N/A</td>
+<td class="hidden px-6 py-4 text-sm font-medium text-green-500 xl:table-cell">N/A</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Query 5</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-500">Completed</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 flex-1 rounded-full bg-background-dark/10 dark:bg-background-light/10">
+<div class="h-full rounded-full bg-primary" style="width: 100%;"></div>
+</div>
+<span class="text-xs font-medium text-background-dark/60 dark:text-background-light/60">100%</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">40K → 22K</span>
+<span class="text-xs text-green-500">(-45%)</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-sm font-medium text-green-500 xl:table-cell">$0.06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<h2 class="mb-4 text-xl font-semibold text-background-dark dark:text-background-light">Batch History</h2>
+<div class="overflow-x-auto rounded-lg border border-background-dark/10 bg-background-light dark:border-background-light/10 dark:bg-background-dark">
+<table class="w-full text-left">
+<thead class="border-b border-background-dark/10 bg-background-light/50 dark:border-background-light/10 dark:bg-background-dark/50">
+<tr>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Batch ID</th>
+<th class="hidden px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60 sm:table-cell">Date</th>
+<th class="hidden px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60 lg:table-cell">Token Savings</th>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Cost Savings</th>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60">Status</th>
+<th class="px-6 py-3 text-sm font-medium text-background-dark/60 dark:text-background-light/60"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-background-dark/10 dark:divide-background-light/10">
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Batch 20231115-001</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 sm:table-cell">11/15/2023</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">420K</span>
+<span class="text-xs text-green-500">(35%)</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-green-500">$1.47</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-500">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-sm font-medium text-primary transition-colors hover:text-primary/80" href="#">View Report</a>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Batch 20231114-002</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 sm:table-cell">11/14/2023</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">210K</span>
+<span class="text-xs text-green-500">(38%)</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-green-500">$0.74</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-500">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-sm font-medium text-primary transition-colors hover:text-primary/80" href="#">View Report</a>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm text-background-dark dark:text-background-light">Batch 20231113-001</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 sm:table-cell">11/13/2023</td>
+<td class="hidden px-6 py-4 text-sm text-background-dark/60 dark:text-background-light/60 lg:table-cell">
+<div class="flex flex-col">
+<span class="font-medium text-background-dark dark:text-background-light">630K</span>
+<span class="text-xs text-green-500">(32%)</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-green-500">$2.21</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-500">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-sm font-medium text-primary transition-colors hover:text-primary/80" href="#">View Report</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

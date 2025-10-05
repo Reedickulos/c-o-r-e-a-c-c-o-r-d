@@ -1,3 +1,10 @@
+# Project Organization Policy
+
+**IMPORTANT:** All files and folders related to this project MUST reside within the `C:\Users\johnd\Desktop\CORE ACCORD V2` directory. No project files should be placed outside of this directory for any reason. This policy is to ensure uniformity, prevent misplaced files, and simplify debugging and maintenance.
+
+---
+
+
 # CORE ACCORD V4 - Deployment Instructions
 
 ## Table of Contents
@@ -453,3 +460,91 @@ curl -X POST https://core-accord.YOUR-SUBDOMAIN.workers.dev/api/collaborate \
 
 **Deployment Complete** ✅
 Your CORE ACCORD V4 platform is now live and operational.
+
+---
+
+# CORE ACCORD V2 - File Audit Report
+
+This report inventories all files related to the CORE ACCORD V2 project based on a search of the `C:\Users\johnd` directory.
+
+## Summary
+
+- **Files in Place:** 49
+- **Potentially Misplaced:** 4
+
+---
+
+## I. Files in Project Directory
+
+These 49 files are correctly located inside `C:\Users\johnd\Desktop\CORE ACCORD V2`.
+
+| File Path                                                                                    | Status   |
+| :------------------------------------------------------------------------------------------- | :------- |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\css\main.067f18cf.css.map` | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\css\main.067f18cf.css`  | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\js\main.882421b1.js.map`  | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\js\main.882421b1.js.LICENSE.txt` | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\js\main.882421b1.js`    | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\js\453.fa03746d.chunk.js.map` | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\static\js\453.fa03746d.chunk.js`  | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\asset-manifest.json`              | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\index.html`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\package-lock.json`                      | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\functions\src\index.js`                                | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\DEPLOYMENT.md`                                           | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\package.json`                           | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\dev.vars.JSON`                                           | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\.claude\settings.local.json`                            | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\index.tsx`                          | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\App.tsx`                            | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\pages\UnifiedApp.tsx`               | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\pages\LandingPage.tsx`              | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\tailwind.config.js`                      | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\pages\QueryPage.tsx`                | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\archive\batch-dashboard.html`            | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\index.css`                          | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\postcss.config.js`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\functions\test.html`                                    | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\functions\wrangler.jsonc`                               | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\.vscode\launch.json`                                    | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\CORE ACCORD V4.0.json`                                    | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\.gitignore`                              | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\favicon.ico`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\logo192.png`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\logo512.png`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\manifest.json`                     | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\build\robots.txt`                        | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\favicon.ico`                      | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\index.html`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\logo192.png`                      | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\logo512.png`                      | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\manifest.json`                    | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\public\robots.txt`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\README.md`                               | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\App.css`                            | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\App.test.tsx`                        | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\logo.svg`                           | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\react-app-env.d.ts`                  | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\reportWebVitals.ts`                  | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\src\setupTests.ts`                       | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\core-accord-ui\tsconfig.json`                           | In Place |
+| `C:\Users\johnd\Desktop\CORE ACCORD V2\MAIN PDF v2.pdf`                                          | In Place |
+
+---
+
+## II. Potentially Misplaced Files
+
+These 4 files were found outside the project directory. Please review them to determine if they are important.
+
+| File Path                                                                                        | Status    | Notes                                                                 |
+| :----------------------------------------------------------------------------------------------- | :-------- | :-------------------------------------------------------------------- |
+| `C:\Users\johnd\Downloads\core-accord-updated.js`                                                | MISPLACED | This could be a valid, but misplaced, project source file.            |
+| `C:\Users\johnd\AppData\Local\Temp\node-jiti\core-accord-ui-tailwind.config.js.a16291ef.js` | MISPLACED | This is a temporary or cached file from a build process. Likely safe to ignore. |
+| `C:\Users\johnd\AppData\Roaming\Microsoft\Windows\Recent\core-accord-simple-FIXED.tar.lnk`   | MISPLACED | This is a shortcut to a file, not the actual project file itself.     |
+| `C:\Users\johnd\AppData\Roaming\Microsoft\Windows\Recent\core-accord-updated.lnk`            | MISPLACED | This is a shortcut to a file, not the actual project file itself.     |
+
+---
+
+### Next Steps
+
+Please review this report. We can then decide which of the misplaced files need to be moved into the `CORE ACCORD V2` directory. As requested, I will also update the `DEPLOYMENT.md` file to include the new policy on file organization.

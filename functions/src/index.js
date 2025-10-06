@@ -4,95 +4,320 @@
 // Defines the five diverse models as specified in the CORE ACCORD protocol
 const MODELS = [
   { id: "deepseek/deepseek-chat", name: "DeepSeek Chat" },
-  { id: "mistralai/mistral-small-latest", name: "Mistral Small" },
-  { id: "google/gemini-flash-1.5", name: "Gemini 1.5 Flash" },
-  { id: "qwen/qwen-2-72b-instruct", name: "Qwen 2 72B" },
+  { id: "mistralai/mistral-small", name: "Mistral Small" },
+  { id: "google/gemini-1.5-flash", name: "Gemini 1.5 Flash" },
+  { id: "qwen/qwen-72b-instruct", name: "Qwen 2 72B" },
   { id: "meta-llama/llama-3-70b-instruct", name: "Llama 3 70B" }
 ];
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
-          'Access-Control-Allow-Origin': '*', 
+          'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
       });
     }
 
-    if (request.method === 'POST' && new URL(request.url).pathname === '/api/collaborate') {
-      try {
+    if (url.pathname.startsWith('/api/collaborate')) {
+        return handleCollaborate(request, env);
+    } else if (url.pathname.startsWith('/api/status')) {
+        return handleStatus(request, env);
+    } else {
+        return new Response(getVisualizationHTML(), {
+            headers: { 'Content-Type': 'text/html' },
+        });
+    }
+  }
+};
+
+// In-memory store for job states.
+// WARNING: This is not suitable for production.
+// In a real-world scenario, this should be replaced with a durable storage solution like Cloudflare KV or Durable Objects.
+const jobStore = new Map();
+
+async function handleCollaborate(request, env) {
+    if (request.method !== 'POST') {
+        return new Response('Expected POST', { status: 405 });
+    }
+
+    try {
         const { query } = await request.json();
         const openRouterApiKey = request.headers.get('Authorization')?.split(' ')[1] || env.OPENROUTER_API_KEY;
 
         if (!openRouterApiKey) {
-          return new Response(JSON.stringify({ error: "API key is required. Provide it in the Authorization header (Bearer KEY) or set OPENROUTER_API_KEY in environment." }), { status: 401 });
+            return new Response(JSON.stringify({ error: "API key is required." }), { status: 401 });
         }
 
-        // True multi-model orchestration
-        const analyses = await Promise.all(
-          MODELS.map(model => callOpenRouter(query, model, openRouterApiKey))
-        );
+        const jobId = crypto.randomUUID();
+        
+        // Store the initial state
+        jobStore.set(jobId, {
+            status: 'processing_round_1',
+            audit_trail: []
+        });
 
-        // Calculate all evaluation metrics
-        const consensusScore = calculateConsensus(analyses);
-        const diversityScore = calculateDiversity(analyses);
-        const complementarityScore = calculateComplementarity(analyses);
-        const { agreements, disagreements } = extractAgreementsAndDisagreements(analyses);
+        // Start the collaboration process in the background, but do not await it.
+        runCollaboration({ query, openRouterApiKey, jobId, env });
 
-        // Calculate token efficiency
-        const totalTokens = analyses.reduce((sum, a) => sum + a.tokens, 0);
-        const naiveApproach = totalTokens * 3; // 3 rounds with full context
-        const coreAccordApproach = totalTokens + (analyses.length * 40 * 2); // compressed context
-        const savings = ((naiveApproach - coreAccordApproach) / naiveApproach * 100).toFixed(1);
+        const responseBody = { jobId };
+        return new Response(JSON.stringify(responseBody), {
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        });
 
-        return new Response(JSON.stringify({
-          query,
-          analyses,
-          evaluation_metrics: {
+    } catch (error) {
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    }
+}
+
+async function handleStatus(request, env) {
+    const url = new URL(request.url);
+    const jobId = url.pathname.split('/')[3];
+
+    if (!jobId) {
+        return new Response('Missing job ID', { status: 400 });
+    }
+
+    const job = jobStore.get(jobId);
+
+    if (!job) {
+        return new Response('Job not found', { status: 404 });
+    }
+
+    return new Response(JSON.stringify(job), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+}
+
+async function runCollaboration({ query, openRouterApiKey, jobId }) {
+  const job = jobStore.get(jobId);
+
+  // --- Round 1 ---
+  const round1Result = await handleRound1({ query, openRouterApiKey });
+  job.audit_trail.push({ round: 1, ...round1Result });
+  job.status = 'processing_round_2';
+  jobStore.set(jobId, job);
+
+  // --- Consensus Check 1 ---
+  const consensus1 = round1Result.evaluation_metrics.consensus_score;
+  if (consensus1 > 80) {
+    job.status = 'complete';
+    job.conclusion = "Strong Consensus reached in Round 1.";
+    job.final_result = round1Result;
+    jobStore.set(jobId, job);
+    return;
+  }
+
+  // --- Round 2 ---
+  let round2PromptType = consensus1 >= 50 ? 'refine' : 'diverge';
+  const round2Result = await handleRound2({
+    query,
+    priorResponses: round1Result.analyses,
+    openRouterApiKey,
+    promptType: round2PromptType
+  });
+  job.audit_trail.push({ round: 2, ...round2Result });
+  job.status = 'processing_round_3';
+  jobStore.set(jobId, job);
+
+  // --- Consensus Check 2 ---
+  const consensus2 = round2Result.evaluation_metrics.consensus_score;
+  if (consensus2 > 80) {
+    job.status = 'complete';
+    job.conclusion = "Strong Consensus reached in Round 2.";
+    job.final_result = round2Result;
+    jobStore.set(jobId, job);
+    return;
+  }
+
+  // --- Round 3 ---
+  let round3PromptType = consensus2 >= 50 ? 'refine' : 'diverge';
+  const round3Result = await handleRound3({
+    query,
+    round1Responses: round1Result.analyses,
+    round2Responses: round2Result.analyses,
+    openRouterApiKey,
+    promptType: round3PromptType
+  });
+  job.audit_trail.push({ round: 3, ...round3Result });
+
+  // --- Final Decision ---
+  const consensus3 = round3Result.evaluation_metrics.consensus_score;
+  if (consensus3 > 67) {
+      job.conclusion = "Consensus reached in Round 3.";
+  } else {
+      job.conclusion = "No Consensus reached after 3 rounds. Escalating for human review.";
+  }
+  job.status = 'complete';
+  job.final_result = round3Result;
+  jobStore.set(jobId, job);
+}
+
+async function handleRound3({ query, round1Responses, round2Responses, openRouterApiKey, promptType }) {
+    const compressedR1 = await Promise.all(
+        round1Responses.map(r => compressResponse(r.content, openRouterApiKey))
+    );
+    const compressedR2 = await Promise.all(
+        round2Responses.map(r => compressResponse(r.content, openRouterApiKey))
+    );
+
+    const compressedContext = "--- ROUND 1 SUMMARY ---\n" + compressedR1.join('\n---\n') + "\n--- ROUND 2 SUMMARY ---" + compressedR2.join('\n---\n');
+
+    let instruction = "Instruction: This is the final round. Review the summaries from all previous rounds and present your final position or vote for the best approach. Justify your final decision.";
+    // Add self-policing footer
+    instruction += "\n\nBefore concluding, assess if you have meaningfully contributed. If not, engage with another's idea or step back to observer mode.";
+
+    const round3Prompt = `Original Query: ${query}\n\n${compressedContext}\n\n${instruction}`;
+
+    const analyses = await Promise.all(
+        MODELS.map(model => callOpenRouter(round3Prompt, model, openRouterApiKey))
+    );
+
+    // Calculate all evaluation metrics
+    const consensusScore = calculateConsensus(analyses);
+    const diversityScore = calculateDiversity(analyses);
+    const complementarityScore = calculateComplementarity(analyses);
+    const { agreements, disagreements } = extractAgreementsAndDisagreements(analyses);
+
+    const totalTokens = analyses.reduce((sum, a) => sum + a.tokens, 0);
+
+    return {
+        query,
+        round: 3,
+        compressed_context: compressedContext,
+        analyses,
+        evaluation_metrics: {
             consensus_score: consensusScore,
             diversity_score: diversityScore,
             complementarity_score: complementarityScore,
             key_agreements: agreements,
             key_disagreements: disagreements,
-          },
-          token_efficiency: {
-            naive_approach_tokens: naiveApproach,
-            core_accord_tokens: coreAccordApproach,
-            savings_percentage: parseFloat(savings),
-            cost_naive: (naiveApproach * 0.5 / 1000000).toFixed(4),
-            cost_core_accord: (coreAccordApproach * 0.5 / 1000000).toFixed(4),
-          },
-          metadata: {
+        },
+        metadata: {
             total_tokens: totalTokens,
             total_time_ms: analyses.reduce((sum, a) => sum + a.response_time_ms, 0),
             analyses_completed: analyses.filter(a => a.success).length,
             analyses_failed: analyses.filter(a => !a.success).length,
-          }
-        }), {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*' 
-          },
-        });
-      } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*' 
-          },
-        });
-      }
-    }
+        }
+    };
+}
 
-    return new Response(getVisualizationHTML(), {
-      headers: { 'Content-Type': 'text/html' },
-    });
+async function compressResponse(content, apiKey) {
+  const compressionPrompt = `Compress the following text into its essential position or breakthrough in 20-40 tokens. Only return the compressed text, nothing else:\n\n${content}`;
+
+  // Using a fast model for compression
+  const compressionModel = { id: "mistralai/mistral-small-latest", name: "Mistral Small for Compression" };
+
+  const compressedResult = await callOpenRouter(compressionPrompt, compressionModel, apiKey);
+
+  if (compressedResult.success) {
+    return compressedResult.content;
+  } else {
+    // Fallback: if compression fails, just truncate the original content
+    return content.substring(0, 200) + "...";
   }
-};
+}
+
+async function handleRound1({ query, openRouterApiKey }) {
+  // True multi-model orchestration
+  const analyses = await Promise.all(
+    MODELS.map(model => callOpenRouter(query, model, openRouterApiKey))
+  );
+
+  // Calculate all evaluation metrics
+  const consensusScore = calculateConsensus(analyses);
+  const diversityScore = calculateDiversity(analyses);
+  const complementarityScore = calculateComplementarity(analyses);
+  const { agreements, disagreements } = extractAgreementsAndDisagreements(analyses);
+
+  // Calculate token efficiency
+  const totalTokens = analyses.reduce((sum, a) => sum + a.tokens, 0);
+  const naiveApproach = totalTokens * 3; // 3 rounds with full context
+  const coreAccordApproach = totalTokens + (analyses.length * 40 * 2); // compressed context
+  const savings = ((naiveApproach - coreAccordApproach) / naiveApproach * 100).toFixed(1);
+
+  return {
+    query,
+    analyses,
+    evaluation_metrics: {
+      consensus_score: consensusScore,
+      diversity_score: diversityScore,
+      complementarity_score: complementarityScore,
+      key_agreements: agreements,
+      key_disagreements: disagreements,
+    },
+    token_efficiency: {
+      naive_approach_tokens: naiveApproach,
+      core_accord_tokens: coreAccordApproach,
+      savings_percentage: parseFloat(savings),
+      cost_naive: (naiveApproach * 0.5 / 1000000).toFixed(4),
+      cost_core_accord: (coreAccordApproach * 0.5 / 1000000).toFixed(4),
+    },
+    metadata: {
+      total_tokens: totalTokens,
+      total_time_ms: analyses.reduce((sum, a) => sum + a.response_time_ms, 0),
+      analyses_completed: analyses.filter(a => a.success).length,
+      analyses_failed: analyses.filter(a => !a.success).length,
+    }
+  };
+}
+
+async function handleRound2({ query, priorResponses, openRouterApiKey, promptType }) {
+  const compressedResponses = await Promise.all(
+    priorResponses.map(response => compressResponse(response.content, openRouterApiKey))
+  );
+  const compressedContext = "--- PREVIOUS RESPONSES ---\n" + compressedResponses.join('\n---\n') + "\n--- END PREVIOUS RESPONSES ---";
+
+  let instruction;
+  if (promptType === 'refine') {
+    instruction = "Instruction: Review the summary of previous responses and refine your position. Provide your updated analysis, building upon or challenging the other perspectives.";
+  } else { // diverge
+    instruction = "Instruction: The previous responses show significant disagreement. Please analyze the different perspectives, highlight the core points of divergence, and defend your own position while challenging the others.";
+  }
+  // Also add the self-policing footer
+  instruction += "\n\nBefore concluding, assess if you have meaningfully contributed. If not, engage with another's idea or step back to observer mode.";
+
+
+  const round2Prompt = `Original Query: ${query}\n\n${compressedContext}\n\n${instruction}`;
+
+  // Call the models again for Round 2
+  const analyses = await Promise.all(
+    MODELS.map(model => callOpenRouter(round2Prompt, model, openRouterApiKey))
+  );
+
+  // Calculate all evaluation metrics
+  const consensusScore = calculateConsensus(analyses);
+  const diversityScore = calculateDiversity(analyses);
+  const complementarityScore = calculateComplementarity(analyses);
+  const { agreements, disagreements } = extractAgreementsAndDisagreements(analyses);
+
+  const totalTokens = analyses.reduce((sum, a) => sum + a.tokens, 0);
+
+  return {
+    query,
+    round: 2,
+    compressed_context: compressedContext,
+    analyses,
+    evaluation_metrics: {
+      consensus_score: consensusScore,
+      diversity_score: diversityScore,
+      complementarity_score: complementarityScore,
+      key_agreements: agreements,
+      key_disagreements: disagreements,
+    },
+    metadata: {
+      total_tokens: totalTokens,
+      total_time_ms: analyses.reduce((sum, a) => sum + a.response_time_ms, 0),
+      analyses_completed: analyses.filter(a => a.success).length,
+      analyses_failed: analyses.filter(a => !a.success).length,
+    }
+  };
+}
 
 async function callOpenRouter(query, model, apiKey) {
   const startTime = Date.now();
@@ -512,9 +737,9 @@ function getVisualizationHTML() {
     '        document.getElementById("diversityScore").textContent = diversity;', 
     '        document.getElementById("complementarityScore").textContent = complementarity;', 
     '        setTimeout(() => {', 
-    '          document.getElementById("consensusBar").style.width = consensus + "%”;', 
-    '          document.getElementById("diversityBar").style.width = diversity + "%”;', 
-    '          document.getElementById("complementarityBar").style.width = complementarity + "%”;', 
+    '          document.getElementById("consensusBar").style.width = consensus + "%";', 
+    '          document.getElementById("diversityBar").style.width = diversity + "%";', 
+    '          document.getElementById("complementarityBar").style.width = complementarity + "%";', 
     '        }, 100);', 
     '        // Update token efficiency', 
     '        document.getElementById("naiveTokens").textContent = data.token_efficiency.naive_approach_tokens.toLocaleString();', 
@@ -524,7 +749,7 @@ function getVisualizationHTML() {
     '        document.getElementById("savingsPercent").textContent = data.token_efficiency.savings_percentage;', 
     '        setTimeout(() => {', 
     '          const savingsRatio = data.token_efficiency.core_accord_tokens / data.token_efficiency.naive_approach_tokens;', 
-    '          document.getElementById("accordBar").style.width = (savingsRatio * 100) + "%”;', 
+    '          document.getElementById("accordBar").style.width = (savingsRatio * 100) + "%";', 
     '        }, 100);', 
     '        // Update agreements/disagreements', 
     '        document.getElementById("agreements").innerHTML = data.evaluation_metrics.key_agreements', 
@@ -566,9 +791,9 @@ function getVisualizationHTML() {
     '      document.getElementById("consensusScore").textContent = batchData.summary.avg_consensus;', 
     '      document.getElementById("diversityScore").textContent = batchData.summary.avg_diversity;', 
     '      document.getElementById("complementarityScore").textContent = Math.round((batchData.summary.avg_consensus + batchData.summary.avg_diversity) / 2);', 
-    '      document.getElementById("consensusBar").style.width = batchData.summary.avg_consensus + "%”;', 
-    '      document.getElementById("diversityBar").style.width = batchData.summary.avg_diversity + "%”;', 
-    '      document.getElementById("complementarityBar").style.width = Math.round((batchData.summary.avg_consensus + batchData.summary.avg_diversity) / 2) + "%”;', 
+    '      document.getElementById("consensusBar").style.width = batchData.summary.avg_consensus + "%";', 
+    '      document.getElementById("diversityBar").style.width = batchData.summary.avg_diversity + "%";', 
+    '      document.getElementById("complementarityBar").style.width = Math.round((batchData.summary.avg_consensus + batchData.summary.avg_diversity) / 2) + "%";', 
     '      document.getElementById("savingsPercent").textContent = batchData.summary.total_savings;', 
     '      document.getElementById("totalTokens").textContent = batchData.summary.total_tokens.toLocaleString();', 
     '      document.getElementById("totalTime").textContent = "Batch";', 
@@ -655,7 +880,7 @@ function getVisualizationHTML() {
     '      const d = currentReportData;', 
     '      let csv = "Analysis ID,Content,Tokens,Response Time (ms),Success\\n";', 
     '      d.analyses.forEach(function(a) {', 
-    '        const content = a.content.replace(/"/g, '""').replace(/\n/g, " ");', 
+    '        const content = JSON.stringify(a.content).slice(1, -1);', 
     '        csv += `"${a.analysis_id}","${content}","${a.tokens}","${a.response_time_ms}","${a.success}"\\n`;', 
     '      });', 
     '      const blob = new Blob([csv], { type: "text/csv" });', 

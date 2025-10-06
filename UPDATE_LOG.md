@@ -97,3 +97,14 @@ What's Next:**
     *   The UI has been updated to use the new `Round` and `Analysis` components for a more structured and visually appealing display.
     *   Deployed the new frontend.
 *   **Outcome:** The application is now fully aligned with the intended real-time architecture. It is ready for end-to-end testing.
+
+## Session Date: 2025-10-06 (Part 4)
+
+### Action: Administrative Corrections
+
+*   **Issue:** User identified that their name was incorrectly recorded as "John Duncan" in project documentation. The project acronym "ACCORD" was also a point of concern.
+*   **Remediation:**
+    1.  Corrected all instances of "John Duncan" to "John Dawson" in `CORE ACCORD V4.0.json`, `EXECUTIVE_SUMMARY_V10.md`, and `EXECUTIVE_SUMMARY_V11.md`.
+    2.  Saved the user's correct name to long-term memory.
+    3.  Verified that the incorrect acronym "ACORD" was not present in the codebase.
+*   **Outcome:** Project documentation now correctly reflects the Principal Investigator's name.

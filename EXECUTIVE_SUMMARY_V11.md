@@ -1,7 +1,7 @@
 # CORE ACCORD: Multi-Agent AI Collaboration Protocol
 ## Executive Summary & Technical Specification v11.0
 
-**Principal Investigator:** John Duncan
+**Principal Investigator:** John Dawson
 **Date:** 2025-10-06
 **Status:** Backend Refactoring for Real-Time Architecture
 
